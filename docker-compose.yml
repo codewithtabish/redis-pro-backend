@@ -5,22 +5,27 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: codewithkashi/redis-pro-app:latest
     ports:
-      - '${PORT}:${PORT}'
+      - '${PORT}:${PORT}' # Maps the PORT from .env file
     environment:
       - NODE_ENV=production
-      - PORT=${PORT}
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL} # Use the REDIS_URL provided by Railway
+      - PORT=${PORT} # Reference PORT from .env
+      - DATABASE_URL=${DATABASE_URL} # Reference DATABASE_URL from .env
+      - REDIS_URL=${REDIS_URL} # Reference REDIS_URL from .env
+      - REDISHOST=${REDISHOST} # Reference REDISHOST from .env
+      - REDIS_PORT=${REDIS_PORT} # Reference REDIS_PORT from .env
+      - REDIS_PASSWORD=${REDIS_PASSWORD} # Reference REDIS_PASSWORD from .env
+      - REDISUSER=${REDISUSER} # Reference REDISUSER from .env
     depends_on:
-      - redis
+      - redis # Make sure redis service is up before app starts
     networks:
       - app-network
 
   redis:
     image: redis:alpine
     ports:
-      - '6379:6379'
+      - '6379:6379' # Exposes Redis on default port 6379
     networks:
       - app-network
 
