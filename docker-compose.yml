@@ -11,10 +11,7 @@ services:
       - NODE_ENV=production
       - PORT=${PORT}
       - DATABASE_URL=${DATABASE_URL}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_DB=${REDIS_DB}
+      - REDIS_URL=${REDIS_URL} # Use the REDIS_URL provided by Railway
     depends_on:
       - redis
     networks:
