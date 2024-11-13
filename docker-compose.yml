@@ -1,16 +1,16 @@
 version: '3.8'
 
 services:
-  app:
+  app-instance-1:
     build:
       context: .
       dockerfile: Dockerfile
     image: codewithkashi/redis-pro-app:latest
     ports:
-      - '${PORT}:${PORT}' # Maps the PORT from .env file
+      - '19000:19000' # Expose the first instance on port 19000 on the host
     environment:
       - NODE_ENV=production
-      - PORT=${PORT} # Reference PORT from .env
+      - PORT=19000 # Port for the first instance
       - DATABASE_URL=${DATABASE_URL} # Reference DATABASE_URL from .env
       - REDIS_URL=${REDIS_URL} # Reference REDIS_URL from .env
       - REDISHOST=${REDISHOST} # Reference REDISHOST from .env
@@ -18,7 +18,49 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD} # Reference REDIS_PASSWORD from .env
       - REDISUSER=${REDISUSER} # Reference REDISUSER from .env
     depends_on:
-      - redis # Make sure redis service is up before app starts
+      - redis
+    networks:
+      - app-network
+
+  app-instance-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: codewithkashi/redis-pro-app:latest
+    ports:
+      - '19001:19000' # Expose the second instance on port 19001 on the host
+    environment:
+      - NODE_ENV=production
+      - PORT=19000 # Port for the second instance
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - REDISHOST=${REDISHOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDISUSER=${REDISUSER}
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  app-instance-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: codewithkashi/redis-pro-app:latest
+    ports:
+      - '19002:19000' # Expose the third instance on port 19002 on the host
+    environment:
+      - NODE_ENV=production
+      - PORT=19000 # Port for the third instance
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - REDISHOST=${REDISHOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDISUSER=${REDISUSER}
+    depends_on:
+      - redis
     networks:
       - app-network
 
