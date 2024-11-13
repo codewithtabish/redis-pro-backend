@@ -11,6 +11,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=19000 # Port for the first instance
+      - INSTANCE_ID=instance-1 # Add unique identifier
       - DATABASE_URL=${DATABASE_URL} # Reference DATABASE_URL from .env
       - REDIS_URL=${REDIS_URL} # Reference REDIS_URL from .env
       - REDISHOST=${REDISHOST} # Reference REDISHOST from .env
@@ -32,12 +33,13 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=19000 # Port for the second instance
+      - INSTANCE_ID=instance-2 # Add unique identifier
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_URL=${REDIS_URL}
       - REDISHOST=${REDISHOST}
       - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDISUSER=${REDISUSER}
+      - REDIS_PASSWORD=${REDIS_PASSWORD} # Reference REDIS_PASSWORD from .env
+      - REDISUSER=${REDISUSER} # Reference REDISUSER from .env
     depends_on:
       - redis
     networks:
@@ -53,6 +55,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=19000 # Port for the third instance
+      - INSTANCE_ID=instance-3 # Add unique identifier
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_URL=${REDIS_URL}
       - REDISHOST=${REDISHOST}
@@ -70,6 +73,22 @@ services:
       - '6379:6379' # Exposes Redis on default port 6379
     networks:
       - app-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx # Use your custom Dockerfile for Nginx
+    image: codewithkashi/nginx-proxy:latest # Custom Nginx image
+    ports:
+      - '80:80' # Expose Nginx on port 80
+    depends_on:
+      - app-instance-1
+      - app-instance-2
+      - app-instance-3
+    networks:
+      - app-network
+    environment:
+      - INSTANCE_ID=nginx # Optionally set an identifier for Nginx
 
 networks:
   app-network:

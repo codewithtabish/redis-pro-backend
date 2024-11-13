@@ -44,6 +44,24 @@ app.get('/get-redis', async (req: Request, response: Response) => {
   }
 });
 
+app.get('/products', (req: Request, res: Response) => {
+  const instanceId = process.env.INSTANCE_ID; // Get the INSTANCE_ID
+  console.log(`Request handled by ${instanceId}`);
+  res.send(`This request was handled by ${instanceId}`);
+});
+
+app.get('/users', (req: Request, res: Response) => {
+  const instanceId = process.env.INSTANCE_ID; // Get the INSTANCE_ID
+  console.log(`Request handled by ${instanceId}`);
+  res.send(`This request was handled by ${instanceId}`);
+});
+
+app.get('/orders', (req: Request, res: Response) => {
+  const instanceId = process.env.INSTANCE_ID; // Get the INSTANCE_ID
+  console.log(`Request handled by ${instanceId}`);
+  res.send(`This request was handled by ${instanceId}`);
+});
+
 // Error handling for uncaught exceptions and unhandled promise rejections
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
