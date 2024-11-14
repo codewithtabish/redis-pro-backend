@@ -43,6 +43,9 @@ app.get('/get-redis', async (req: Request, response: Response) => {
     return response.status(500).json({ message: error.message });
   }
 });
+app.get('/pro/test', (req: Request, res: Response) => {
+  res.send('Hello, TypeScript with Express! This is the /pro/test route.');
+});
 
 app.get('/products', (req: Request, res: Response) => {
   const instanceId = process.env.INSTANCE_ID; // Get the INSTANCE_ID

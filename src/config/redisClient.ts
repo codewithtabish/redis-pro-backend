@@ -3,7 +3,7 @@ import Redis from 'ioredis';
 // Check if REDIS_URL is available from environment variables
 const redisClient = process.env.REDIS_URL
   ? new Redis(
-      'redis://default:QXEHFhzcdgzmhItcYZHCRlFQFAxmsQVH@autorack.proxy.rlwy.net:31881',
+      'redis://default:oYAPkgKHYSHRNoTikCQuGggEhThHYXVr@redis.railway.internal:6379',
     ) // Use the complete REDIS_URL from Railway (or any Redis provider)
   : new Redis({
       host: process.env.REDISHOST || 'localhost', // Use REDISHOST environment variable, fallback to 'localhost'
